@@ -23,7 +23,9 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
-    protected static ?string $navigationGroup = 'Admin Controll';
+    protected static ?string $navigationGroup = 'Admin Control';
+
+    protected static ?string $navigationLabel = 'Manage User';
 
 
     public static function form(Form $form): Form
@@ -40,7 +42,7 @@ class UserResource extends Resource
                         Forms\Components\TextInput::make('username')
                             ->required()
                             ->maxLength(255)
-                            ->unique(column: 'username'),
+                            ->unique(column: 'username', ignorable: fn($record) => $record),
                         Forms\Components\TextInput::make('email')
                             ->required()
                             ->email()
@@ -48,11 +50,12 @@ class UserResource extends Resource
                             ->unique(column: 'email', ignorable: fn($record) => $record)
                             ->dehydrated(fn(?string $state): bool => filled($state))
                             ->live(onBlur: true),
-                        Forms\Components\TextInput::make('email_verified_at')
+                        Forms\Components\DatePicker::make('email_verified_at')
                             ->label('Email Verified At')
                             ->placeholder('YYYY-MM-DD')
-                            ->maxLength(255)
-                            ->default(now()),
+                            ->maxDate(now()),
+                        Forms\Components\Select::make('roles')->multiple()->relationship('roles', 'name'),
+
                         Forms\Components\TextInput::make('password')
                             ->required()
                             ->password()
@@ -127,10 +130,10 @@ class UserResource extends Resource
                     })
                     ->html(), // Ini penting agar HTML ditampilkan
 
-                Tables\Columns\TextColumn::make('username')
-                    ->sortable()
-                    ->searchable()
-                    ->label('Username'),
+                    Tables\Columns\TextColumn::make('username')
+                        ->sortable()
+                        ->searchable()
+                        ->label('Username'),
                 Tables\Columns\TextColumn::make('phone')
                     ->sortable()
                     ->searchable()
@@ -181,5 +184,10 @@ class UserResource extends Resource
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 }
