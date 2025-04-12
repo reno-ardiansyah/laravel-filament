@@ -23,7 +23,7 @@ class LogsPolicy
      */
     public function view(User $user, Logs $logs): bool
     {
-        return $user->can('view_logs');
+        return $user->can('{{ View }}');
     }
 
     /**
@@ -31,7 +31,7 @@ class LogsPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_logs');
+        return $user->can('{{ Create }}');
     }
 
     /**
@@ -39,7 +39,7 @@ class LogsPolicy
      */
     public function update(User $user, Logs $logs): bool
     {
-        return $user->can('update_logs');
+        return $user->can('{{ Update }}');
     }
 
     /**
@@ -47,7 +47,7 @@ class LogsPolicy
      */
     public function delete(User $user, Logs $logs): bool
     {
-        return $user->can('delete_logs');
+        return $user->can('{{ Delete }}');
     }
 
     /**
@@ -55,7 +55,7 @@ class LogsPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_logs');
+        return $user->can('{{ DeleteAny }}');
     }
 
     /**
@@ -63,7 +63,7 @@ class LogsPolicy
      */
     public function forceDelete(User $user, Logs $logs): bool
     {
-        return $user->can('force_delete_logs');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class LogsPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_logs');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class LogsPolicy
      */
     public function restore(User $user, Logs $logs): bool
     {
-        return $user->can('restore_logs');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class LogsPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_logs');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class LogsPolicy
      */
     public function replicate(User $user, Logs $logs): bool
     {
-        return $user->can('replicate_logs');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class LogsPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_logs');
+        return $user->can('{{ Reorder }}');
     }
 }

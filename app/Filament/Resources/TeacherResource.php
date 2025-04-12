@@ -20,7 +20,10 @@ class TeacherResource extends Resource
 {
     protected static ?string $model = Teacher::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user';
+
+    protected static ?string $navigationGroup = 'Academic';
+
 
     public static function form(Form $form): Form
     {
@@ -143,9 +146,9 @@ class TeacherResource extends Resource
                     ->sortable()
                     ->searchable()
                     ->formatStateUsing(function ($state, $record) {
-                        $avatar = '<img src="' . (Storage::url($record->profile_picture) ?? 'https://ui-avatars.com/api/?name=' . urlencode($record->name)) . '" alt="Avatar" class="w-8 h-8 rounded-full me-4 inline">';
-                        $name = '<span class="font-medium">' . e($record->name) . '</span>';
-                        $email = '<div class="text-gray-500 text-sm">' . e($record->email) . '</div>';
+                        $avatar = '<img src="' . (Storage::url($record->user->profile_picture) ?? 'https://ui-avatars.com/api/?name=' . urlencode($record->name)) . '" alt="Avatar" class="w-8 h-8 rounded-full me-4 inline">';
+                        $name = '<span class="font-medium">' . e($record->user->name) . '</span>';
+                        $email = '<div class="text-gray-500 text-sm">' . e($record->user->email) . '</div>';
                         return new \Illuminate\Support\HtmlString(
                             '<div class="flex items-center space-x-2">' .
                                 $avatar .

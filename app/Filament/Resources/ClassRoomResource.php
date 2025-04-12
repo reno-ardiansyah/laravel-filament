@@ -17,7 +17,9 @@ class ClassRoomResource extends Resource
 {
     protected static ?string $model = ClassRoom::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-building-library';
+
+    protected static ?string $navigationGroup = 'Academic';
 
     public static function form(Form $form): Form
     {

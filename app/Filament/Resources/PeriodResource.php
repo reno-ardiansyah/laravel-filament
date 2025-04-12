@@ -17,7 +17,9 @@ class PeriodResource extends Resource
 {
     protected static ?string $model = Period::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-calendar-date-range';
+
+    protected static ?string $navigationGroup = 'Records';
 
     public static function form(Form $form): Form
     {
