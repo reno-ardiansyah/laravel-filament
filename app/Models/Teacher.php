@@ -25,6 +25,23 @@ class Teacher extends Model
         'user_id',
     ];
 
+    protected static function booted(): void
+    {
+        static::deleting(function ($teacher) {
+            if (! $teacher->isForceDeleting()) {
+                $teacher->user?->delete();
+            }
+        });
+
+        static::restoring(function ($teacher) {
+            $teacher->user?->restore(); 
+        });
+
+        static::forceDeleted(function ($teacher) {
+            $teacher->user?->forceDelete(); 
+        });
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -49,4 +66,6 @@ class Teacher extends Model
     {
         return $this->morphMany(Attendance::class, 'attendable');
     }
+
+    
 }

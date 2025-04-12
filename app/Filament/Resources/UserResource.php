@@ -141,6 +141,7 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('address')
                     ->sortable()
                     ->searchable()
+                    ->limit(50)
                     ->label('Address'),
                 Tables\Columns\TextColumn::make('postal_code')
                     ->sortable()

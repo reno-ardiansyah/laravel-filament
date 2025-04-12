@@ -157,32 +157,37 @@ class TeacherResource extends Resource
                         );
                     })
                     ->html(),
-                Tables\Columns\TextColumn::make('user.username')
-                    ->sortable()
-                    ->searchable()
-                    ->label('Username'),
                 Tables\Columns\TextColumn::make('nip')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('dob')
+                Tables\Columns\TextColumn::make('user.dob')
                     ->sortable()
                     ->searchable()
                     ->label('Date of Birth'),
-                Tables\Columns\TextColumn::make('address')
+                Tables\Columns\TextColumn::make('user.address')
                     ->sortable()
+                    ->limit(60)
                     ->searchable()
                     ->label('Address'),
-
+                Tables\Columns\TextColumn::make('type')
+                    ->sortable()
+                    ->searchable()
+                    ->label('Position'),
             ])
             ->filters([
-                //
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }
