@@ -47,6 +47,7 @@ class LogsResource extends Resource implements HasShieldPermissions
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('action')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('ip_address')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('loggable_type')->label('Model'),
                 Tables\Columns\TextColumn::make('loggable_id')->label('Model ID'),
                 Tables\Columns\TextColumn::make('user.name')->label('User')->sortable()->searchable(),

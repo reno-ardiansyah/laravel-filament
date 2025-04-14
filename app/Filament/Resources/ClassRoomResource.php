@@ -105,20 +105,24 @@ class ClassRoomResource extends Resource
     }
 
     public static function beforeCreate(array $data): void
-{
-    // Validasi custom untuk menghindari duplikasi data yang sama
-    foreach ($data['sections'] as $sectionData) {
-        $exists = static::getModel()::where('grade', $data['grade'])
-            ->where('period_id', $data['period_id'])
-            ->where('section', $sectionData['section'])
-            ->exists();
+    {
+        // Validasi custom untuk menghindari duplikasi data yang sama
+        foreach ($data['sections'] as $sectionData) {
+            $exists = static::getModel()::where('grade', $data['grade'])
+                ->where('period_id', $data['period_id'])
+                ->where('section', $sectionData['section'])
+                ->exists();
 
-        if ($exists) {
-            throw ValidationException::withMessages([
-                'sections' => "Kombinasi grade {$data['grade']} dan section {$sectionData['section']} untuk periode ini sudah ada.",
-            ]);
+            if ($exists) {
+                throw ValidationException::withMessages([
+                    'sections' => "Kombinasi grade {$data['grade']} dan section {$sectionData['section']} untuk periode ini sudah ada.",
+                ]);
+            }
         }
     }
-}
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
 }

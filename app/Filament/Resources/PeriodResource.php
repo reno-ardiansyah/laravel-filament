@@ -33,12 +33,12 @@ class PeriodResource extends Resource
                             ->required()
                             ->live()
                             ->options(function () {
-                                $startYear = 2019;
+                                $startYear = 2018;
                                 $endYear = \Illuminate\Support\Carbon::now()->year + 2;
 
                                 $allPeriods = [];
-                                for ($i = $startYear; $i <= $endYear; $i += 2) {
-                                    $allPeriods[] = "{$i}/" . ($i + 2);
+                                for ($i = $startYear; $i <= $endYear; $i += 1) {
+                                    $allPeriods[] = "{$i}/" . ($i + 1);
                                 }
 
                                 $existingPeriods = static::getModel()::pluck('value')->toArray();
@@ -88,5 +88,10 @@ class PeriodResource extends Resource
             'create' => Pages\CreatePeriod::route('/create'),
             'edit' => Pages\EditPeriod::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 }
