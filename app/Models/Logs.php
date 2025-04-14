@@ -13,6 +13,7 @@ class Logs extends Model
         'changes',
         'message',
         'user_id',
+        'ip_address'
     ];
 
     public function loggable()

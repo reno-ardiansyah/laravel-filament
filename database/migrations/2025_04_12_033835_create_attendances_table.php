@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('status'); 
             $table->longText('note')->nullable();
             $table->boolean('type')->default(1); 
+            $table->foreignId('period_id')->constrained()->cascadeOnDelete();
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
             $table->foreignId('deleted_by')->nullable()->constrained('users')->nullOnDelete();

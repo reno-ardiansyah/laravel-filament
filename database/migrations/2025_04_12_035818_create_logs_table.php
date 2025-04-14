@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->morphs('loggable');
 
+            $table->ipAddress()->nullable();
             $table->string('action'); 
             $table->json('changes')->nullable(); 
             $table->text('message')->nullable();

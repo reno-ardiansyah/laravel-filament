@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
-use App\Models\{User, Teacher, Config};
+use App\Models\ClassRoom;
+use App\Observers\ClassRoomObserver;
 use Illuminate\Support\ServiceProvider;
 use Spatie\Permission\Models\{Role, Permission};
-use App\Observers\{RoleObserver, PermissionObserver, TeacherObserver, ConfigObserver, UserObserver};
+use App\Models\{User, Teacher, Config, Period};
+use App\Observers\{RoleObserver, PermissionObserver, TeacherObserver, ConfigObserver, PeriodObserver, UserObserver};
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,8 +26,10 @@ class AppServiceProvider extends ServiceProvider
     {
         User::observe(UserObserver::class);
         Config::observe(ConfigObserver::class);
+        ClassRoom::observe(ClassRoomObserver::class);
         Permission::observe(PermissionObserver::class);
         Role::observe(RoleObserver::class);
         Teacher::observe(TeacherObserver::class);
+        Period::observe(PeriodObserver::class);
     }
 }

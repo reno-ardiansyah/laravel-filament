@@ -19,12 +19,18 @@ class Attendance extends Model
         'note',
         'type',
         'created_by',
+        'period_id',
         'deleted_by',
     ];
     
     public function attendable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function period()
+    {
+        return $this->belongsTo(Period::class);
     }
 
     public function creator(): BelongsTo

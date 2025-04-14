@@ -13,10 +13,16 @@ class Subject extends Model
      */
     protected $fillable = [
         'name',
+        'period_id',
     ];
     
     public function teachers()
     {
         return $this->belongsToMany(Teacher::class)->withPivot('grade')->withTimestamps();
+    }
+
+    public function period()
+    {
+        return $this->belongsTo(Period::class);
     }
 }

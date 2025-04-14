@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedTinyInteger('grade');
             $table->string('section')->nullable(); 
+            $table->foreignId('period_id')->nullable()->constrained()->cascadeOnDelete(); 
             $table->timestamps();
         });
     }

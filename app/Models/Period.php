@@ -24,4 +24,19 @@ class Period extends Model
     {
         return $this->hasMany(Schedule::class);
     }
+
+    public function classRooms()
+    {
+        return $this->hasMany(ClassRoom::class);
+    }
+
+    public function subjects()
+    {
+        return $this->hasMany(Subject::class);
+    }
+
+    public function attendances()
+    {
+        return $this->hasMany(ClassRoom::class);
+    }
 }
