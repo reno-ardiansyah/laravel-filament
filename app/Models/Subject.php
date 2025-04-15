@@ -18,7 +18,7 @@ class Subject extends Model
     
     public function teachers()
     {
-        return $this->belongsToMany(Teacher::class)->withPivot('grade')->withTimestamps();
+        return $this->belongsToMany(Teacher::class, 'teacher_subject')->using(TeacherSubject::class)->withPivot('grade')->withTimestamps();
     }
 
     public function period()

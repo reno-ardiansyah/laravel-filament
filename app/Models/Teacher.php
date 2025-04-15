@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Teacher extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -25,6 +27,12 @@ class Teacher extends Model
         'user_id',
     ];
 
+    public function getNameAttribute(): string
+    {
+        return "{$this->first_name} {$this->last_name}";
+    }
+
+
     protected static function booted(): void
     {
         static::deleting(function ($teacher) {
@@ -34,11 +42,11 @@ class Teacher extends Model
         });
 
         static::restoring(function ($teacher) {
-            $teacher->user?->restore(); 
+            $teacher->user?->restore();
         });
 
         static::forceDeleted(function ($teacher) {
-            $teacher->user?->forceDelete(); 
+            $teacher->user?->forceDelete();
         });
     }
 
@@ -54,7 +62,7 @@ class Teacher extends Model
 
     public function subjects()
     {
-        return $this->belongsToMany(Subject::class)->withPivot('grade')->withTimestamps();
+        return $this->belongsToMany(Subject::class, 'teacher_subject')->using(TeacherSubject::class)->withPivot('grade')->withTimestamps();
     }
 
     public function schedules(): MorphMany
@@ -66,6 +74,4 @@ class Teacher extends Model
     {
         return $this->morphMany(Attendance::class, 'attendable');
     }
-
-    
 }

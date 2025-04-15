@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SubjectResource\Pages;
-use App\Filament\Resources\SubjectResource\RelationManagers;
-use App\Models\Subject;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Period;
+use App\Models\Subject;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\SubjectResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\SubjectResource\RelationManagers;
 
 class SubjectResource extends Resource
 {
@@ -25,7 +26,11 @@ class SubjectResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\TextInput::make('name')->required(),
+                        Forms\Components\Select::make('period_id')->required()->options(Period::pluck('value', 'id')->toArray())->searchable(),
+                    ])
             ]);
     }
 
@@ -33,7 +38,16 @@ class SubjectResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name')->label('Subject Name')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('period.value')->label("Period Scholl")->sortable()->searchable(),
+                Tables\Columns\TagsColumn::make('teachers')
+                    ->getStateUsing(
+                        fn($record) => $record->teachers
+                            ->take(10)
+                            ->map(fn($teacher) => "{$teacher->first_name} {$teacher->last_name} (Grade: {$teacher->pivot->grade})")
+                            ->toArray()
+                    )
+                    ->label('Teachers'),
             ])
             ->filters([
                 //
@@ -51,7 +65,7 @@ class SubjectResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\TeachersRelationManager::class
         ];
     }
 

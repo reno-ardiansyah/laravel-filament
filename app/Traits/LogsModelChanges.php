@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Models\Logs;
+use Illuminate\Support\Str;
 
 trait LogsModelChanges
 {
@@ -18,7 +19,9 @@ trait LogsModelChanges
 
         
         Logs::create([
-            'loggable_id' => $model->id,
+            'loggable_id' => method_exists($model, 'getKey') && filled($model->getKey())
+            ? $model->getKey()
+            : $this->generateLoggableKey($model),
             'loggable_type' => get_class($model),
             'action' => $action,
             'changes' => json_encode($beforeAfter),
