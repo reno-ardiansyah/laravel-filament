@@ -15,6 +15,8 @@ class Schedule extends Model
         'day',
         'start_time',
         'end_time',
+        'schedulable_type',
+        'schedulable_id'
     ];
 
 
@@ -30,7 +32,7 @@ class Schedule extends Model
 
     public function classRoom(): BelongsTo
     {
-        return $this->belongsTo(ClassRoom::class);
+        return $this->belongsTo(ClassRoom::class, 'class_room');
     }
 
     public function period()
