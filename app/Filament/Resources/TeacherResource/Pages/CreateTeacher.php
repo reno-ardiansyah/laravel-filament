@@ -13,10 +13,6 @@ class CreateTeacher extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        info('Teacher Form Data:', $data); // Cek di log storage/logs/laravel.log
-        // Pastikan jika 'user' tidak ada, maka form group user memang belum terisi.
-
-        // Jika data user ada, buat user terlebih dahulu
         if (isset($data['user']) && !empty($data['user'])) {
             $userData = $data['user'];
             $user = \App\Models\User::create($userData);
@@ -32,5 +28,10 @@ class CreateTeacher extends CreateRecord
         $data['user'] = $this->record->user->toArray();
 
         return $data;
+    }
+
+    protected function afterCreate(): void
+    {
+        $this->record->user?->assignRole('Teacher');
     }
 }

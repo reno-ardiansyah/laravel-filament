@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('nisn')->unique();
-            $table->date('dob')->nullable();
             $table->year('entry_year')->nullable();
             $table->string('batch')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');

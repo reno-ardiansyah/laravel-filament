@@ -27,4 +27,6 @@ class ClassRoom extends Model
     {
         return $this->belongsTo(Period::class);
     }
+
+    
 }

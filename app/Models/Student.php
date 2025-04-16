@@ -15,11 +15,11 @@ class Student extends Model
         'first_name',
         'last_name',
         'nisn',
-        'dob',
         'user_id',
         'teacher_id',
         'entry_year',
         'batch',
+        'class_room_id',
         'status',
         'created_by',
     ];

@@ -36,6 +36,7 @@ class TeachersRelationManager extends RelationManager
                         ->afterStateUpdated(function ($state, Forms\Set $set, Forms\Get $get) {
                             $firstName = $get('first_name');
                             $set('user.name', trim("$firstName $state"));
+                            $set('user.username', Str::slug(trim("$firstName $state")));
                         }),
 
                     Forms\Components\TextInput::make('nip')

@@ -90,11 +90,7 @@ class UserResource extends Resource
                             ->format('Y-m-d')
                             ->displayFormat('d/m/Y'),
                         Forms\Components\Select::make('gender')
-                            ->options([
-                                'male' => 'Male',
-                                'female' => 'Female',
-                                'other' => 'Other',
-                            ])
+                            ->options(\App\Enums\Gender::class)
                             ->nullable(),
                         Forms\Components\FileUpload::make('profile_picture')
                             ->image()
@@ -138,6 +134,7 @@ class UserResource extends Resource
                     ->sortable()
                     ->searchable()
                     ->label('Phone'),
+                Tables\Columns\TagsColumn::make('roles.name'),
                 Tables\Columns\TextColumn::make('address')
                     ->sortable()
                     ->searchable()

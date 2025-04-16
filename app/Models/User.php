@@ -38,6 +38,27 @@ class User extends Authenticatable
         'gender',
     ];
 
+    protected static function booted(): void
+    {
+        static::deleting(function ($user) {
+            if (! $user->isForceDeleting()) {
+                $user->teacher?->delete(); 
+                $user->student?->delete(); 
+            }
+        });
+
+        static::restoring(function ($user) {
+            $user->teacher?->restore();
+            $user->student?->restore();
+        });
+
+        static::forceDeleted(function ($user) {
+            $user->teacher?->forceDelete();
+            $user->student?->forceDelete();
+        });
+    }
+
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -63,12 +84,12 @@ class User extends Authenticatable
 
     public function teacher(): HasOne
     {
-        return $this->hasOne(Teacher::class);
+        return $this->hasOne(Teacher::class)->withTrashed();
     }
 
     public function student(): HasOne
     {
-        return $this->hasOne(Student::class);
+        return $this->hasOne(Student::class)->withTrashed();
     }
 
     public function students(): HasMany
@@ -76,7 +97,7 @@ class User extends Authenticatable
         return $this->hasMany(Student::class, 'created_by');
     }
 
-    public function loggables() 
+    public function loggables()
     {
         return $this->morphMany(Logs::class, 'loggable');
     }

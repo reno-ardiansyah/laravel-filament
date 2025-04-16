@@ -10,6 +10,7 @@ use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use Filament\Resources\Resource;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\TeacherResource\Pages;
@@ -94,11 +95,7 @@ class TeacherResource extends Resource
 
                             Forms\Components\Select::make('gender')
                                 ->label('Gender')
-                                ->options([
-                                    'male' => 'Male',
-                                    'female' => 'Female',
-                                    'other' => 'Other',
-                                ])
+                                ->options(\App\Enums\Gender::class)
                                 ->nullable()
                                 ->default('other'),
 
@@ -146,9 +143,9 @@ class TeacherResource extends Resource
                     ->sortable()
                     ->searchable()
                     ->formatStateUsing(function ($state, $record) {
-                        $avatar = '<img src="' . (Storage::url($record->user->profile_picture) ?? 'https://ui-avatars.com/api/?name=' . urlencode($record->name)) . '" alt="Avatar" class="w-8 h-8 rounded-full me-4 inline">';
+                        $avatar = '<img src="' . (Storage::url($record?->user?->profile_picture) ?? 'https://ui-avatars.com/api/?name=' . urlencode($record?->name)) . '" alt="Avatar" class="w-8 h-8 rounded-full me-4 inline">';
                         $name = '<span class="font-medium">' . e($record->first_name) . ' ' . e($record->last_name) . '</span>';
-                        $email = '<div class="text-gray-500 text-sm">' . e($record->user->email) . '</div>';
+                        $email = '<div class="text-gray-500 text-sm">' . e($record?->user?->email) . '</div>';
                         return new \Illuminate\Support\HtmlString(
                             '<div class="flex items-center space-x-2">' .
                                 $avatar .
@@ -206,5 +203,12 @@ class TeacherResource extends Resource
             'create' => Pages\CreateTeacher::route('/create'),
             'edit' => Pages\EditTeacher::route('/{record}/edit'),
         ];
+    }
+
+    protected function handleRecordCreation(array $data): Model
+    {
+        $teacher = static::getModel()::create($data);
+        $teacher->user->assignRole('Teacher');
+        return $teacher;
     }
 }
