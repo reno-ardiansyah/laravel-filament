@@ -9,6 +9,7 @@ use Filament\Forms\Form;
 use App\Models\ClassRoom;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Resources\ClassRoomResource;
+use Awcodes\TableRepeater;
 
 class CreateClassRoom extends CreateRecord
 {
@@ -32,8 +33,11 @@ class CreateClassRoom extends CreateRecord
                         ->options(Period::pluck('value', 'id')->toArray())
                         ->searchable()
                         ->required(),
-                    Forms\Components\Repeater::make('sections')
+                    TableRepeater\Components\TableRepeater::make('sections')
                         ->label('Sections')
+                        ->headers([          
+                            TableRepeater\Header::make('section')->width('150px'),
+                        ])
                         ->schema([
                             Forms\Components\TextInput::make('section')
                                 ->required()
